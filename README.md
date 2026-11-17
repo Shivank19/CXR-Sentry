@@ -13,7 +13,7 @@ flowchart LR
     T --> R["Greedy or sampled drafts"]
 ```
 
-[Install](#install) · [Quick start](#quick-start) · [Research workflow](#research-workflow) · [Contributing](#contributing) · [License and support](#license-and-support)
+[Install](#install) · [Quick start](#quick-start) · [Research workflow](#research-workflow) · [Repository layout](#repository-layout) · [Contributing](#contributing) · [License and support](#license-and-support)
 
 ## Install
 
@@ -91,10 +91,26 @@ The [generator guide](docs/generator.md) documents the input contract, checkpoin
 
 The study uses reference-report disagreements as error proxies and evaluates review budgets of 10%, 20%, and 30%, with 20% as the primary budget. Full-data training and benchmark figures are pending.
 
+## Repository layout
+
+| File                                                                                    | Purpose                                                                                  |
+| --------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| [`dataset.py`](src/cxr_sentry/generator/dataset.py)                                     | Reads manifest splits, preprocesses PNGs, and batches tokenized report targets.          |
+| [`visual_tokenizer.py`](src/cxr_sentry/generator/visual_tokenizer.py)                   | Converts DenseNet feature maps into 16 visual tokens with learned positions.             |
+| [`model.py`](src/cxr_sentry/generator/model.py)                                         | Connects frozen DenseNet and the fixed prompt to the T5 report generator.                |
+| [`train.py`](src/cxr_sentry/generator/train.py)                                         | Trains on the train split, logs epoch metrics, and saves the lowest-dev-loss checkpoint. |
+| [`plot_metrics.py`](src/cxr_sentry/generator/plot_metrics.py)                           | Plots train and dev loss and marks the selected epoch.                                   |
+| [`generate.py`](src/cxr_sentry/generator/generate.py)                                   | Reloads a checkpoint and provides greedy and sampled generation.                         |
+| [`export.py`](src/cxr_sentry/generator/export.py)                                       | Exports one greedy draft per study in a split, with mean token NLL and token count.      |
+| [`evaluate_image_dependence.py`](src/cxr_sentry/generator/evaluate_image_dependence.py) | Compares reference loss and greedy drafts for matched, shuffled, and constant images.    |
+| [`plot_image_dependence.py`](src/cxr_sentry/generator/plot_image_dependence.py)         | Summarizes the image comparisons and saves the figures.                                  |
+| [`check_flan_t5_forward.py`](tests/check_flan_t5_forward.py)                            | Checks the generator’s forward pass on one image.                                        |
+| [`generator.md`](docs/generator.md)                                                     | Documents the manifest, checkpoint, export scoring, and reproducibility details.         |
+
 ## Contributing
 
 Use a branch for each change and open a focused pull request. Describe what changed and which commands you ran to verify it. Keep datasets, model weights, checkpoints, and run outputs out of Git.
 
-## License and support
+<!-- ## License and support
 
-A project license has yet to be specified. Report bugs and ask usage questions in [GitHub Issues](https://github.com/Shivank19/CXR-Sentry/issues).
+A project license has yet to be specified. Report bugs and ask usage questions in [GitHub Issues](https://github.com/Shivank19/CXR-Sentry/issues). -->
