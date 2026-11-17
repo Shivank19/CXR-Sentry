@@ -218,3 +218,8 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Local CXR data and experiment artifacts
+/data/
+/checkpoints/
+/runs/
