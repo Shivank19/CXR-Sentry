@@ -1,0 +1,8 @@
+huggingface-hub==2.4.0
+matplotlib==3.11.2
+numpy==2.5.5
+peft==0.21.3
+Pillow==13.0.0
+sentencepiece==0.2.3
+torchxrayvision==1.5.7
+transformers==5.23.0
